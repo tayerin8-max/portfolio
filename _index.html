@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size:18px;">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="initial-scale=1, width=device-width">
+  <title>GE Aerospace • Identity Sovereignty Toolkit | okta.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <style>
+  :root{
+    --ink:#0B1F2A; --muted:#52677F; --bg:#F6F9FC; --card:#FFFFFFF2;
+    --rule:#E6EEF8; --rule-soft:#EDF3FB;
+    --okta:#1E6FFF; --okta-sky:#E8F2FF; --okta-mint:#E9FFF7; --okta-lilac:#F3EDFF;
+    --ge-blue: #005a8b; --ge-accent: #00a8e1;
+    --stage-cons:#ECF4FF; --stage-decision:#E7FFF6; --stage-purchase:#FFF6E5;
+    --shadow:0 10px 30px rgba(11,31,42,.10); --radius:16px;
+    --action-purple: #A855F7;
+    --action-purple-deep: #7C3AED;
+    --action-teal: #00C2A8;
+    --action-electric: #00D1FF;
+    
+    /* Okta Orange Branding */
+    --t1-bg: #FFF7ED;
+    --t1-text: #EA580C;
+    --t1-border: #FED7AA;
+  }
+  html { height: 100%; box-sizing: border-box; background: radial-gradient(1200px 520px at 8% -10%, #EAF2FF 0%, transparent 60%), radial-gradient(1200px 520px at 110% 0%, #E9FFF7 0%, transparent 55%), var(--bg); }
+  *, *::before, *::after { box-sizing: inherit; }
+  body { margin: 0; padding: 0; height: 100%; overflow-y: auto; background: transparent; color: var(--ink); font-family: "Open Sans", system-ui, -apple-system, Arial, sans-serif; line-height: 1.5; min-height: 100vh; }
+  
+  #folloze_target_content_id { width: 100%; height: 100%; padding-bottom: 50px; background: transparent; min-height: 100vh; }
+  .wrap{max-width:1320px;margin:34px auto;padding:0 24px}
+  
+  .log-activity { 
+    display: inline-flex; align-items: center; gap: 10px; padding: 14px 28px; 
+    background: linear-gradient(135deg, var(--ge-blue), var(--ge-accent)); 
+    border: none; color: #FFFFFF !important; font-weight: 800; font-size: 14px; border-radius: 8px; 
+    text-decoration: none; text-transform: uppercase; margin-bottom: 24px; 
+    box-shadow: 0 6px 20px rgba(0, 90, 139, 0.35); transition: all 0.25s ease; letter-spacing: 0.8px;
+  }
+  .log-activity:hover { transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0, 90, 139, 0.45); filter: brightness(1.1); }
+  
+  .hero{ border:1px solid var(--rule); border-radius:22px; box-shadow:var(--shadow); padding:32px; background:linear-gradient(180deg,#FFFFFFD9,#FFFFFFC9); position:relative; overflow:hidden; }
+  .hero h1{margin:0 0 6px;font-size:34px;color:var(--ge-blue); font-weight: 800;}
+  .sub{margin:0;color:var(--muted);font-weight:600}
+  .gline{height:3px;border-radius:3px;margin:14px 0;background:linear-gradient(90deg, var(--ge-blue), var(--okta), var(--action-purple), var(--action-teal))}
+  
+  .badge{ display:inline-block;padding:6px 14px;border-radius:999px; background:#F2F7FF;color:#0F2230;border:1px solid var(--rule);font-size:12px;font-weight:800; box-shadow:var(--shadow) }
+  .badge.t1 { background: var(--t1-bg); color: var(--t1-text); border: 1px solid var(--t1-border); }
+
+  .dashboard-btn {
+    background: var(--t1-bg) !important;
+    color: var(--t1-text) !important;
+    border: 1.5px solid var(--t1-border) !important;
+    font-size: 10px;
+    padding: 10px 18px;
+    font-weight: 800;
+    text-transform: uppercase;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(234, 88, 12, 0.1);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 8px;
+  }
+  .dashboard-btn:hover { background: #FFEDD5 !important; transform: translateY(-1px); box-shadow: 0 6px 16px rgba(234, 88, 12, 0.15); }
+
+  .tiles{display:grid;grid-template-columns:repeat(5,1fr);gap:16px;margin-top:24px}
+  .tile{ background:var(--card); border:1px solid var(--rule); border-radius:var(--radius); min-height:140px; padding:20px; cursor:pointer; transition:transform .15s, box-shadow .25s, border-color .25s; box-shadow:var(--shadow); outline: none; display: flex; flex-direction: column; justify-content: space-between; }
+  .tile:hover, .tile:focus{transform:translateY(-4px); box-shadow:0 16px 36px rgba(11,31,42,.14); border-color:#CFE0FF}
+  .tile i{font-size:28px;color:var(--ge-blue)}
+  .tile .title{font-weight:800;margin-top:12px;color:#0F2230; font-size: 15px;}
+  .tile .muted{color:#5B7391;font-size:12px; font-weight: 500;}
+
+  .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:99999}
+  .modal.show{display:flex}
+  .backdrop{position:absolute;inset:0;background:rgba(8,16,24,.45);backdrop-filter:blur(6px)}
+  .panel{ position:relative;width:min(95vw,1100px);max-height:92vh;overflow-y:auto; background:#FFFFFF; border:1px solid var(--rule); border-radius:20px; box-shadow:0 40px 100px rgba(0,0,0,0.25) }
+  .panel header{display:flex;justify-content:space-between;align-items:center;padding:18px 24px;border-bottom:1px solid var(--rule); background: #F9FBFF; position: sticky; top: 0; z-index: 2;}
+  .panel header h2{margin:0;color:#0F2230; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;}
+  .content{padding:24px}
+  .close{position:absolute;top:14px;right:18px;width:34px;height:34px;border-radius:10px;border:1px solid var(--rule);background:#FFFFFF;color:#0F2230;font-size:22px;line-height:32px;cursor:pointer;z-index:10; font-weight: bold;}
+  
+  .card{background:#FFFFFF;border:1px solid var(--rule);border-radius:14px;padding:24px;box-shadow:var(--shadow); margin-bottom: 16px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px}
+  .kpi{background:#FFFFFF;border:1px solid var(--rule);border-radius:12px;padding:14px;box-shadow:var(--shadow); border-top: 3px solid var(--okta); position: relative; transition: all 0.2s ease;}
+  .kpi .khd{display:flex; align-items:center; gap:8px; font-size:11px; font-weight:800; color:var(--muted); text-transform: uppercase;}
+  .kpi .v{margin-top:6px;font-weight:800;font-size:22px;color:#0F2230}
+  .kpi .bench{font-size:10px;color:#788CA2;font-weight:700;margin-top:4px; text-transform: uppercase;}
+  .strip{height:4px;border-radius:2px;background:linear-gradient(90deg, var(--ge-accent), var(--okta-sky));opacity:.6;margin-top:12px}
+  
+  .table-card{margin-top:32px;background:#FFFFFF;border:1px solid var(--rule);border-radius:18px;padding:24px;box-shadow:var(--shadow)}
+  .table-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px}
+  .table-wrap{max-height:600px;overflow-y:auto;margin-top:8px}
+  
+  table{width:100%;border-collapse:separate;border-spacing:0 8px; table-layout: auto;}
+  td,th{padding:12px 16px;font-size:13px;text-align:left;color:#0F2230;}
+  th{color:#34577A;position:sticky;top:0;background:#F4F8FF;z-index:1;border-bottom:2px solid var(--rule); font-weight: 800; text-transform: uppercase; font-size: 10px; letter-spacing: 0.5px;}
+  tr{background:#FFFFFF;}
+  
+  th:first-child, td:first-child { padding-left: 0 !important; width: 20%; }
+  th:nth-child(2), td:nth-child(2) { width: auto; }
+  th:last-child, td:last-child { padding-right: 0 !important; text-align: right; width: 1%; white-space: nowrap; }
+
+  .mb-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .mb-table th { background: transparent; padding: 16px 12px; border-bottom: 2px solid var(--rule); }
+  .mb-table td { padding: 18px 12px; border-bottom: 1px solid var(--rule-soft); vertical-align: middle; }
+  .mb-table tr:hover td { background-color: #fbfdff; }
+
+  .chip{background:#fff;border:1.5px solid #DCE8F6;color:#0F2230;border-radius:999px;padding:8px 14px;font-size:12px;cursor:pointer;margin:4px;transition:all 0.2s; font-weight: 600;}
+  .chip.active{border-color:var(--action-purple); background: var(--okta-lilac); font-weight: 700; color: var(--action-purple-deep);}
+  
+  .action-tip { background: #F9F5FF; border-left: 4px solid var(--action-purple); padding: 14px 18px; border-radius: 6px; font-size: 13px; margin-top: 16px; color: #4C1D95; font-weight: 700; line-height: 1.5; box-shadow: 0 4px 12px rgba(124, 58, 237, 0.1); }
+  .preview-box { border: 1px solid var(--rule-soft); border-radius: 12px; padding: 24px; margin-top: 16px; background: #FFF; font-size: 13px; line-height: 1.6; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.02); white-space: pre-wrap; }
+  .preview-box::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--ge-blue); border-radius: 4px 0 0 4px; }
+  
+  .action-button.primary-action { background: linear-gradient(135deg, #7C3AED, #A855F7); color: white !important; border: none; border-radius: 8px; padding: 12px 24px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px;}
+  .action-button.outline-action { background: #FFF; color: var(--action-purple-deep) !important; border: 1.5px solid var(--action-purple); border-radius: 8px; padding: 12px 24px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px;}
+  .action-button.gmail-action { background: #FFFFFF; color: #EA4335 !important; border: 1.5px solid #EA4335; border-radius: 8px; padding: 12px 24px; font-weight: 700; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px;}
+
+  .intel-btn { 
+    display: inline-flex; align-items: center; padding: 10px 20px; 
+    background: var(--ge-blue); color: #fff !important; border-radius: 8px; font-size: 11px; font-weight: 800; border: none; text-decoration: none; cursor: pointer;
+  }
+  .view-report-link { color: var(--okta); text-decoration: none; font-size: 11px; font-weight: 800; text-transform: uppercase; margin-top: auto; letter-spacing: 0.3px; transition: opacity 0.2s; }
+  .view-report-link:hover { opacity: 0.8; }
+  
+  .generator-config { display: flex; flex-direction: column; gap: 20px; }
+  .filter-group { padding: 12px 0; border-bottom: 1px dashed var(--rule-soft); }
+  .generator-section-title { font-size: 13px; font-weight: 800; color: #34577A; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .generator-input { padding: 12px 16px; border: 1px solid var(--rule); border-radius: 8px; width: 100%; margin-top: 8px; font-size: 14px; background: #F8FAFC; outline: none;}
+  .generator-input:focus { border-color: var(--action-purple); background: #FFF; }
+  
+  .maturation-card { border: 1px solid var(--rule); border-radius: 18px; box-shadow: var(--shadow); background: #FFFFFF; padding: 24px; border-top: 5px solid var(--action-purple); display: block; width: 100%; margin-bottom: 20px;}
+  .maturation-title { font-size: 11px; font-weight: 800; color: var(--action-purple-deep); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 24px; }
+  .maturation-content { display: flex; align-items: flex-start; gap: 40px; }
+  .maturation-stat { text-align: center; min-width: 120px; }
+  .maturation-stat .val { font-size: 42px; font-weight: 800; color: var(--action-purple-deep); line-height: 1; }
+  .maturation-stat .lbl { font-size: 9px; font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-top: 12px; }
+  .maturation-details { flex: 1; }
+  .maturation-details h3 { font-size: 20px; font-weight: 800; margin: 0 0 8px; color: #0F2230; }
+  .maturation-details p { font-size: 13px; color: var(--muted); margin: 0 0 20px; font-weight: 600; }
+  .agency-badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .agency-badge { background: #E8F2FF; color: var(--ge-blue); border: 1px solid #CFE0FF; border-radius: 4px; padding: 4px 10px; font-size: 10px; font-weight: 800; }
+  </style>
+</head>
+<body>
+  <div id="folloze_target_content_id" class="full_page_content">
+    <div class="wrap">
+      
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLScQqRDcne7j7xPPBjx_SNGAM7UYPwyeqTu4cnYUkmDLLPgJPQ/viewform" target="_blank" class="log-activity">
+        <i class="fa-solid fa-rocket"></i>
+        <span>Sovereign Identity Command Center</span>
+      </a>
+
+      <div class="hero">
+        <h1>GE Aerospace • ABX Command Hub</h1>
+        <h2 style="margin-top: 0; font-weight:700; color:var(--ge-accent)">Securing the Billion Dollar Standalone Backlog</h2>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <span class="badge">EBITDA Recovery • CMMC 3.0 • IPO Velocity</span>
+          <a href="https://app.platform.atko.ai/api/tenants/taylor-gregory2-app/apps/ge-intel-board/launch?path=%2F" target="_blank" class="dashboard-btn">INTELLIGENCE BOARD ›</a>
+        </div>
+        <div class="gline"></div>
+        <p class="sub">Operationalizing Identity Sovereignty to sever the directory umbilical cord. Every user currently "rented" from Corporate is a Separation Tax dragging down your EBITDA.</p>
+        <div class="tiles">
+          <div class="tile" data-open="outreach"><i class="fa-solid fa-envelope-open-text"></i><div class="title">Outreach Scripts</div><div class="muted">Emails + Voicemails</div></div>
+          <div class="tile" data-open="positioning"><i class="fa-solid fa-shield-halved"></i><div class="title">Okta Positioning</div><div class="muted">Sovereign SIAM</div></div>
+          <div class="tile" data-open="sales-deck"><i class="fa-solid fa-chalkboard"></i><div class="title">Industry & Compliance Decks</div><div class="muted">Executive Briefing</div></div>
+          <div class="tile" data-open="decision-makers"><i class="fa-solid fa-users-gear"></i><div class="title">Stakeholders</div><div class="muted">Leadership Board</div></div>
+          <div class="tile" data-open="compliance"><i class="fa-solid fa-scale-balanced"></i><div class="title">Compliance Audit</div><div class="muted">CMMC • ITAR</div></div>
+          <div class="tile" data-open="insights"><i class="fa-solid fa-layer-group"></i><div class="title">Data Insights</div><div class="muted">Campaign Pipeline</div></div>
+          <div class="tile" data-open="analysts"><i class="fa-solid fa-chart-line"></i><div class="title">Analyst Reports</div><div class="muted">TEI for M&A</div></div>
+          <div class="tile" data-open="competitors"><i class="fa-solid fa-user-ninja"></i><div class="title">Competitors</div><div class="muted">Battlecards</div></div>
+          <div class="tile" data-open="testimonials"><i class="fa-solid fa-users-viewfinder"></i><div class="title">Proof Points</div><div class="muted">Defense Stories</div></div>
+          <div class="tile" data-open="partners"><i class="fa-solid fa-handshake"></i><div class="title">Partners</div><div class="muted">SI Playbook</div></div>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div class="table-head">
+          <h3 style="margin:0;color:#0F2230; font-weight: 800;">Strategic Stakeholder Priority (Executive Board)</h3>
+          <a href="https://app.platform.atko.ai/api/tenants/taylor-gregory2-app/apps/ge-intel-board/launch?path=%2F" target="_blank" class="dashboard-btn">INTELLIGENCE BOARD ›</a>
+        </div>
+        <div class="table-wrap">
+          <table id="account-table">
+            <thead>
+              <tr>
+                <th>Stakeholder</th>
+                <th>Title / Hub Focus</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="acct-rows">
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="backdrop" data-close></div>
+    <div class="panel">
+      <button class="close" data-close>×</button>
+      <header><h2 id="modal-title">Sales Toolkit</h2></header>
+      <div class="content" id="modal-body"></div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const STAKEHOLDERS = [
+      { n: "H. Lawrence Culp, Jr.", t: "Chairman and CEO", h: "Cincinnati HQ", p: "Executive" }, 
+      { n: "Mohamed Ali", t: "President & CEO, Commercial Engines", h: "Commercial Hub", p: "Executive" }, 
+      { n: "David Burns", t: "Chief Information Officer", h: "Digital Technology Hub", p: "IT Ops" }, 
+      { n: "Patrick de Castelbajac", t: "Chief Strategy Officer", h: "Enterprise Strategy", p: "Executive" }, 
+      { n: "Rahul Ghai", t: "SVP and Chief Financial Officer", h: "Finance HQ", p: "Executive" }, 
+      { n: "Amy Gowder", t: "President & CEO, Defense and Systems", h: "Defense Center", p: "Executive" }, 
+      { n: "Kerron Duncan", t: "Principal Cybersecurity Architect", h: "Security Hub", p: "Security" }, 
+      { n: "Tara DiJulio", t: "SVP & Chief Corporate Affairs Officer", h: "Corporate Affairs", p: "Executive" }, 
+      { n: "Christian Meisner", t: "Chief Human Resources Officer", h: "Global HR", p: "Executive" }, 
+      { n: "Chris Pereira", t: "CEO, SaaS & Sustainability", h: "Software Services", p: "IT Ops" }, 
+      { n: "Jake Phillips", t: "SVP, General Counsel and Secretary", h: "Legal & Compliance", p: "Security" }, 
+      { n: "Riccardo Procacci", t: "President & CEO, Propulsion & Additive", h: "Technology Hub", p: "Executive" }, 
+      { n: "Blaire Shoor", t: "Head of Investor Relations", h: "Investor Hub", p: "Executive" }, 
+      { n: "Russell Stokes", t: "Special Advisor to the CEO", h: "Executive Office", p: "Executive" }, 
+      { n: "Jason J. Tonich", t: "Chief Commercial Sales & Customer Officer", h: "Sales Hub", p: "Executive" }, 
+      { n: "Phil Wickler", t: "Chief Transformation Officer", h: "Transformation Hub", p: "Executive" }, 
+      { n: "Joshua Ohmer", t: "Sr. Director, Cyber Security", h: "Security Hub", p: "Security" } 
+    ];
+
+    const SCRIPT_TEMPLATES = {
+      closing: "\n\nBest,\n[Your Name] — Okta",
+      openerText: {
+        COLD: "I’ve been following GE Aerospace’s path toward standalone operations—leading with a unified SIAM strategy is critical to capturing the attention of external stakeholders.",
+        WARM: "Following up from our recent note regarding the Nov 2026 cmmc deadline—consolidating customer and supplier identity is the fastest path to eliminating technical bottlenecks.",
+        FOLLOWUP: "Circling back on the enterprise-wide IAM transformation discussion. Bridging workforce tools with a cohesive SIAM fabric is a primary 2026 margin target."
+      },
+      emailBody: {
+        Executive: "Identity often fragments across disparate systems like Ping, SailPoint, AWS, SAP, and Oracle during a major organization split. Emphasizing a unified enterprise IAM solution eliminates the friction in external relationships. We’ve been helping aerospace leaders bridge working workforce tools with a strategic SIAM partner to create one cohesive fabric.",
+        Security: "Forensic demarcation is critical to ensure parent company breaches do not spill into GE Aerospace enclaves. Customer and supplier identity management is frequently identified as a primary pain point. Okta provides the 'Unified Identity Fabric' ensuring that external relationships are secure, auditable, and seamless across heterogeneous cloud VPCs.",
+        'IT Ops': "Fragmented customer and supplier silos create excessive operational noise for IT teams. Okta provides a unified control plane that connects employees, customers, and suppliers into a single source of truth—reducing complexity, eliminating redundant systems, and enabling secure separation between environments without disrupting operations.",
+        Procurement: "Disparate identity silos for suppliers and customers add significant O&M tax to standalone margins. Consolidating external identity into a single authorized platform significantly lowers TCO. Are you looking to consolidate fragmented systems like Ping and SailPoint into one unified enterprise IAM platform?"
+      }
+    };
+
+    function createGmailDraft(s) {
+      const fName = s.n === "H. Lawrence Culp, Jr." ? "Larry" : s.n.split(' ')[0];
+      const subject = `GE Aerospace / standalone identity sync`;
+      let msg = "";
+      const roadmapExecs = ["Larry", "David", "Mohamed", "Rahul", "Amy", "Patrick", "Riccardo", "Phil"];
+      const useManufacturing = roadmapExecs.includes(fName);
+
+      if(roadmapExecs.includes(fName)) {
+        msg = `Hi ${fName},\n\nI’ve been following GE Aerospace’s path toward standalone operations. Given your leadership as ${s.t}, I wanted to share how we’re helping peers eliminate the friction of fragmented customer and supplier identity management across systems like Ping, SailPoint, SAP, and Oracle.\n\nOkta provides a unified enterprise IAM solution that bridges your existing workforce tools with a cohesive SIAM fabric, ensuring your external relationships are as secure as your internal enclaves.\n\nWould you be open to a 15-minute sync next week to walk through our manufacturing roadmap?\n\nBest,\n[Your Name] — Okta`;
+      } else if(s.p === 'Security') {
+        const roleHook = s.n === "Kerron Duncan" ? "architectural sovereignty" : "the CMMC requirements for 2026";
+        msg = `Hi ${fName},\n\nStrong security boundaries are critical to ensure parent company breaches do not spill into GE Aerospace enclaves. As ${s.t}, you're likely navigating ${roleHook}.\n\nOkta provides the "Human Firewall" for the entire enterprise ecosystem. Can we schedule a brief chat on how we're enabling this cohesive fabric strategy?\n\nBest,\n[Your Name] — Okta`;
+      } else {
+        msg = `Hi ${fName},\n\n${SCRIPT_TEMPLATES.emailBody[s.p] || SCRIPT_TEMPLATES.emailBody.Executive}\n\nBest,\n[Your Name] — Okta`;
+      }
+      const email = `${s.n.toLowerCase().replace(/[.,\s]+/g, '.')}.extern@ge.com`; 
+      return `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${email}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(msg)}`;
+    }
+
+    window.openModal = function(key) {
+      const modal = document.getElementById('modal');
+      const modalBody = document.getElementById('modal-body');
+      const modalTitle = document.getElementById('modal-title');
+      if (!modal || !modalBody || !modalTitle) return;
+      modalTitle.innerText = key.replace('-', ' ').toUpperCase();
+      modalBody.innerHTML = contentFor(key);
+      bindEvents(modalBody);
+      modal.classList.add('show');
+    };
+
+    function bindEvents(modalBody) {
+      modalBody.querySelectorAll('.chip').forEach(c => {
+        c.addEventListener('click', function() {
+          const group = this.parentElement.id;
+          modalBody.querySelectorAll(`#${group} .chip`).forEach(x => x.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+      const emailBtn = modalBody.querySelector('#genEmail');
+      const voiceBtn = modalBody.querySelector('#genVoice');
+      if (emailBtn) {
+        const generate = (mode) => {
+          const nameInput = modalBody.querySelector('#agency-name-input').value || "[Name]";
+          const tone = modalBody.querySelector('#tone-chips .chip.active').dataset.val;
+          const persona = modalBody.querySelector('#persona-chips .chip.active').dataset.val;
+          const found = STAKEHOLDERS.find(s => s.n.toLowerCase().includes(nameInput.toLowerCase()));
+          const finalPersona = found ? found.p : persona;
+
+          const area = modalBody.querySelector('#preview-area');
+          const txt = modalBody.querySelector('#preview-txt');
+          const hdr = modalBody.querySelector('#preview-hdr');
+          const hook = modalBody.querySelector('#focus-chips .chip.active').dataset.val;
+          const concept = hook === 'SIAM' ? "SIAM" : "Supplier Excellence";
+          const subKey = modalBody.querySelector('#subject-chips .chip.active').dataset.val;
+          
+          const subjectMap = { Smarter: "Margin Protection", Compliance: "CMMC mandate", API: "Partner Access" };
+          const subjectText = `GE Aerospace / ${subjectMap[subKey] || 'standalone transition'}`;
+
+          if(mode === 'email') {
+            hdr.innerHTML = `<i class="fa-solid fa-envelope"></i> Generated Email Preview`;
+            const body = SCRIPT_TEMPLATES.emailBody[finalPersona] || SCRIPT_TEMPLATES.emailBody.Executive;
+            txt.innerText = `SUBJECT: ${subjectText}\n\nHi ${nameInput.split(' ')[0]},\n\n${SCRIPT_TEMPLATES.openerText[tone]}\n\n${body}${SCRIPT_TEMPLATES.closing}`;
+          } else {
+            hdr.innerHTML = `<i class="fa-solid fa-microphone"></i> Generated Voicemail Preview`;
+            const voiceMap = {
+              Executive: "...managing customer/supplier identity across fragmented systems is complex; we're helping aerospace teams eliminate that friction with one unified Enterprise IAM solution.",
+              Security: "...protecting external stakeholder relationships while providing a seamless access experience is a tough needle to thread. We're bridging workforce tools with High-Assurance Identity.",
+              'IT Ops': "...fragmented identity is the biggest hidden cost in standalone ops. We’ve built a way to create a cohesive identity fabric across the entire enterprise."
+            };
+            txt.innerText = `Hi ${nameInput.split(' ')[0]}, this is [Your Name] with Okta... ${voiceMap[finalPersona] || voiceMap.Executive}`;
+          }
+          area.style.display = 'block';
+          
+          const copyBtn = modalBody.querySelector('#copyBtn');
+          copyBtn.onclick = () => {
+            const el = document.createElement("textarea"); el.value = txt.innerText; document.body.appendChild(el); el.select(); document.execCommand('copy'); document.body.removeChild(el);
+            copyBtn.innerText = 'Copied!';
+          };
+
+          const gmBtn = modalBody.querySelector('#gmailBtn');
+          if(gmBtn && mode === 'email') {
+            gmBtn.style.display = 'flex';
+            gmBtn.onclick = () => {
+              const ePrefix = nameInput.toLowerCase().replace(/[.,\s]+/g, '.');
+              const url = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${ePrefix}.extern@ge.com&su=${encodeURIComponent(subjectText)}&body=${encodeURIComponent(txt.innerText)}`;
+              window.open(url, '_blank');
+            };
+          } else if(gmBtn) gmBtn.style.display = 'none';
+        };
+        emailBtn.addEventListener('click', () => generate('email'));
+        voiceBtn.addEventListener('click', () => generate('voice'));
+      }
+    }
+
+    function contentFor(key) {
+      if (key === 'decision-makers') {
+        return `<div class="card" style="padding:0; border:none; box-shadow:none;">
+            <div style="padding-bottom:16px;">
+              <h3 style="margin:0; color:#0F2230;">Executive Stakeholder Matrix (Official Board)</h3>
+              <p style="font-size: 13px; color: var(--muted); margin-top: 8px; font-style: italic;">Please use your best judgement — this is AI generated and is not meant to replace your professional sales skillset.</p>
+            </div>
+            <div class="table-wrap"><table class="mb-table"><thead><tr><th>Stakeholder</th><th>Title / Hub Focus</th><th>Action</th></tr></thead><tbody>${STAKEHOLDERS.map(s => `<tr><td style="font-weight:700; color:#0F2230; width:30%;">${s.n}</td><td style="width:45%;"><div style="font-weight:700;">${s.t}</div><div style="font-size:11px; color:#52677F;">${s.h}</div></td><td style="width:25%;"><a href="${createGmailDraft(s)}" target="_blank" class="intel-btn" style="padding:8px 12px; font-size:10px;">GMAIL DRAFT ›</a></td></tr>`).join('')}</tbody></table></div></div>`;
+      }
+      if (key === 'outreach') {
+        return `<div class="card" style="border-top: 5px solid var(--action-purple);"><h3>Outreach script generator</h3><div class="generator-config"><div class="filter-group"><div class="generator-section-title">1. Scenario</div><div id="tone-chips"><button class="chip active" data-val="COLD">Cold</button><button class="chip" data-val="WARM">Warm</button><button class="chip" data-val="FOLLOWUP">Follow-up</button></div></div><div class="filter-group"><div class="generator-section-title">2. Persona Target</div><div id="persona-chips"><button class="chip active" data-val="Executive">Executive</button><button class="chip" data-val="Security">Security</button><button class="chip" data-val="IT Ops">IT Ops</button><button class="chip" data-val="Procurement">Procurement</button></div></div><div class="filter-group"><div class="generator-section-title">3. Focus</div><div id="focus-chips"><button class="chip active" data-val="SIAM">SIAM</button><button class="chip" data-val="Supplier">Supplier Excellence</button></div></div><div class="filter-group"><div class="generator-section-title">4. Strategic Angle</div><div id="subject-chips"><button class="chip active" data-val="Smarter">Recovery</button><button class="chip" data-val="Compliance">CMMC</button><button class="chip" data-val="Default">Default</button></div></div><div class="filter-group" style="border:none;"><div class="generator-section-title">5. Stakeholder Name</div><input type="text" id="agency-name-input" class="generator-input" placeholder="e.g. Kerron Duncan"></div><div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;"><button class="action-button primary-action" id="genEmail" style="justify-content:center;">Email</button><button class="action-button outline-action" id="genVoice" style="justify-content:center;">Voicemail</button></div></div><div id="preview-area" style="display:none; margin-top:24px; border-top:1px solid var(--rule); padding-top:24px;"><div id="preview-hdr" style="font-weight:800; font-size:11px; text-transform:uppercase; margin-bottom:20px;">Preview</div><div class="preview-box" id="preview-txt"></div><div style="display:flex; justify-content:flex-end; gap:12px; margin-top:20px;"><button class="action-button gmail-action" id="gmailBtn" style="display:none;">Gmail</button><button class="action-button primary-action" style="font-size:12px;" id="copyBtn">Copy Script</button></div></div></div>`;
+      }
+      if (key === 'sales-deck') {
+        return `
+          <div class="card">
+            <h3>Industry & Compliance Decks</h3>
+            <div class="preview-box" style="margin-bottom: 16px;">
+              <div style="display:flex; align-items:center; gap:12px;"><i class="fa-solid fa-file-powerpoint" style="font-size:32px; color:var(--okta);"></i><div><b style="font-size:14px;">Kickoff Deck</b><br><span style="font-size:11px; color:var(--muted);">Sovereign IAM & Separation Roadmap</span></div></div>
+              <a href="https://docs.google.com/presentation/d/1h7khOiHAla7VfYE0InP-IEUg0OXV2S8wTrqcXo3tZ8I/edit?usp=sharing" target="_blank" class="intel-btn" style="margin-top:16px;">OPEN DECK ›</a>
+            </div>
+            <div class="preview-box">
+              <div style="display:flex; align-items:center; gap:12px;"><i class="fa-solid fa-file-pdf" style="font-size:32px; color:#EA4335;"></i><div><b style="font-size:14px;">Manufacturing Launch Overview</b><br><span style="font-size:11px; color:var(--muted);">Updated March 2026 • Identity Architecture</span></div></div>
+              <a href="https://www.okta.com/sites/default/files/2026-03/manufacturing-launch-week-release-overview.pdf" target="_blank" class="intel-btn" style="margin-top:16px;">VIEW OVERVIEW ›</a>
+            </div>
+          </div>`;
+      }
+      if (key === 'analysts') {
+        const reports = [
+          { provider: "FORRESTER®", title: "TEI for Identity Governance", value: "211% ROI", copy: "Okta enables 50% faster integration/separation times. Study proves $3.2M reclaim in annual labor currently lost to manual AD-Sync maintenance tax.", url: "https://www.okta.com/sites/default/files/2025-09/Forrester-TEI-for-OIG-updated.pdf" },
+          { provider: "GARTNER®", title: "AM MQ 2025", value: "9th Year Leader", copy: "Okta leads for architectural neutrality—critical for securing GEA's heterogeneous VPC enclaves (AWS/Azure/Linux) where Entra often fails.", url: "https://www.okta.com/resources/gartner-magic-quadrant-access-management/thankyou/" },
+          { provider: "OKTA®", title: "Secure Sign-In Trends", value: "FastPass Doubled", copy: "Phishing-resistant MFA adoption up ~63% year-over-year. Report shows ~70% MFA adoption and ~7% pure passwordless maturity.", url: "https://www.okta.com/newsroom/articles/secure-sign-in-trends-report-2025/" }
+        ];
+        return `<div class="card"><h3>Aerospace M&A Validation</h3><div class="kpi-grid">${reports.map(r => `<div class="kpi" style="border-top:4px solid var(--okta); height:280px; display:flex; flex-direction:column; padding:24px;"><div class="khd">${r.provider}</div><div class="v" style="font-size:28px;">${r.value}</div><p style="font-size:12px; font-weight:800; margin: 8px 0;">${r.title}</p><p style="font-size:11px; color:var(--muted); line-height:1.5;">${r.copy}</p><a href="${r.url}" target="_blank" class="view-report-link">VIEW REPORT ›</a></div>`).join('')}</div></div>`;
+      }
+      if (key === 'compliance') {
+        return `<div class="card"><h3>Audit Velocity & Compliance</h3>
+          <div style="border-left:4px solid var(--action-teal); padding:15px; background:#f8fafc; margin-bottom:12px;"><a href="https://dodcio.defense.gov/cmmc/About/" target="_blank" style="font-weight:800; font-size:14px; color:var(--action-teal); text-decoration:underline;">CMMC 2.0 Readiness</a><p style="font-size:12px;">Operationalizing Level 2 (Advanced) and Level 3 (Expert) security requirements for Defense Primes. Okta provides the high-assurance foundation.</p></div>
+          <div style="border-left:4px solid var(--okta); padding:15px; background:#f8fafc; margin-bottom:12px;"><a href="https://csrc.nist.gov/pubs/sp/800/172/final" target="_blank" style="font-weight:800; font-size:14px; color:var(--okta); text-decoration:underline;">NIST SP 800-172</a><p style="font-size:12px;">Enhanced Security Requirements for Protecting Controlled Unclassified Information (CUI). Critical for standalone Prime status enclaves.</p></div>
+          <div style="border-left:4px solid var(--action-purple); padding:15px; background:#f8fafc;"><a href="https://www.pmddtc.state.gov/ddtc_public?id=ddtc_public_portal_itar_landing" target="_blank" style="font-weight:800; font-size:14px; color:var(--action-purple-deep); text-decoration:underline;">ITAR / Export Controls</a><p style="font-size:12px;">Geographic identity fencing and strict sovereignty controls for digital blueprints.</p></div>
+        </div>`;
+      }
+      if (key === 'insights') {
+        return `<div class="maturation-card"><div class="maturation-title">PROGRAM PIPELINE (LAUNCH BASELINE)</div><div class="maturation-content"><div class="maturation-stat"><div class="val">Baseline</div><div class="lbl">READINESS</div></div><div class="maturation-details"><h3>44 Strategic Hubs Identified</h3><p>Stakeholders mapped across Cincinnati HQ, Lynn, and Evendale enclaves.</p><div class="agency-badges">${STAKEHOLDERS.slice(0, 11).map(s => `<span class="agency-badge">${s.n.split(' ').pop()} (${s.n.split(' ')[0]})</span>`).join('')}</div></div></div></div><div class="card"><b>Account Engagement</b><div class="kpi-grid"><div class="kpi"><div class="khd">Board Members</div><div class="v">15 Active</div><div class="strip"></div></div><div class="kpi"><div class="khd">Dwell Time</div><div class="v">Baseline</div><div class="strip"></div></div></div></div>`;
+      }
+      if (key === 'positioning') {
+        return `<div class="card"><h3>Okta Positioning: SIAM Excellence</h3><div class="kpi-grid"><div class="kpi"><b>1. Unified SIAM Solution</b><p style="font-size:12px;">Consolidate fragmented customer and supplier identity across disparate systems.</p></div><div class="kpi"><b>2. Forensic Demarcation</b><p style="font-size:12px;">Ensure parent company breaches do not spill into GE Aerospace enclaves.</p></div><div class="kpi"><b>3. Enterprise IAM</b><p style="font-size:12px;">The neutral identity fabric for heterogeneous cloud enclaves.</p></div></div></div>`;
+      }
+      if (key === 'competitors') {
+        return `<div class="card"><h3>Competitive Battlecards: The GEA Pivot</h3><div class="kpi-grid">
+          <div class="kpi" style="border-top:3px solid #0078d4; padding:20px;">
+            <b>Microsoft Entra</b>
+            <p style="font-size:12px; margin-top:10px;"><b>Okta Kill-Shot:</b> Entra fails in fragmented external ecosystems where architectural neutrality is required.</p>
+          </div>
+          <div class="kpi" style="border-top:3px solid #ff0000; padding:20px;">
+            <b>Ping Identity</b>
+            <p style="font-size:12px; margin-top:10px;"><b>Okta Kill-Shot:</b> Ping is a legacy friction tax slowing down standalone launch. Okta is the cord-cutter.</p>
+          </div>
+        </div></div>`;
+      }
+      if (key === 'partners') {
+        return `<div class="card"><h3>Integrator Playbook</h3>
+          <div class="preview-box" style="margin-bottom:12px;"><b>SAIC - Government Security Lead</b><p style="font-size:12px;">Helps GE Aerospace meet federal security rules. They use Okta to keep their user data independent from the old parent company.</p></div>
+          <div class="preview-box" style="margin-bottom:12px;"><b>Deloitte - Split Strategy Lead</b><p style="font-size:12px;">Managing the business separation. They use Okta to help GE Aerospace cut costs by unlinking from Corporate identity systems.</p></div>
+          <div class="preview-box"><b>Booz Allen - Software Safety</b><p style="font-size:12px;">Protecting software updates. They use Okta to ensure only verified employees can access and change critical flight systems.</p></div>
+        </div>`;
+      }
+      if (key === 'testimonials') {
+        return `
+          <div class="card">
+            <h3>Defense Sector Proof Points</h3>
+            <div class="kpi-grid">
+              <div class="kpi" style="border-top:3px solid var(--okta); padding:24px; display:flex; flex-direction:column; height:240px;">
+                <b>ManTech</b>
+                <p style="font-size:12px; margin-top:10px; flex-grow:1;">Modernizing Security for 100k+ users. Proves Okta can handle the size and complexity of a global organization like GE Aerospace.</p>
+                <a href="https://www.okta.com/customers/mantech/" target="_blank" class="view-report-link">VIEW STORY ›</a>
+              </div>
+              <div class="kpi" style="border-top:3px solid var(--okta); padding:24px; display:flex; flex-direction:column; height:240px;">
+                <b>Government Defense</b>
+                <p style="font-size:12px; margin-top:10px; flex-grow:1;">Meeting the highest security standards. Essential for protecting sensitive aerospace data and high-value military contracts.</p>
+                <a href="https://www.okta.com/solutions/public-sector/" target="_blank" class="view-report-link">VIEW STORY ›</a>
+              </div>
+            </div>
+          </div>`;
+      }
+      return `<div class="card"><h3>${key.toUpperCase()}</h3><p>Operational intel restored.</p></div>`;
+    }
+
+    function renderPriorityTable() {
+      const tbody = document.getElementById('acct-rows');
+      if (!tbody) return;
+      const top10Indices = [0, 1, 2, 3, 4, 5, 6, 7, 10, 11]; 
+      const top10 = top10Indices.map(i => STAKEHOLDERS[i]);
+      tbody.innerHTML = top10.map(s => `<tr><td><b>${s.n}</b></td><td>${s.t}<br><span style="font-size:10px; color:gray;">${s.h}</span></td><td style="text-align:right;"><a href="${createGmailDraft(s)}" target="_blank" class="intel-btn" style="padding:4px 8px; font-size:10px;">GMAIL DRAFT ›</a></td></tr>`).join('');
+    }
+
+    function init() {
+      renderPriorityTable();
+      document.body.addEventListener('click', (e) => {
+        const tile = e.target.closest('.tile');
+        const openBtn = e.target.closest('[data-open]');
+        const closeBtn = e.target.closest('[data-close]');
+        if (tile) window.openModal(tile.getAttribute('data-open'));
+        else if (openBtn) window.openModal(openBtn.getAttribute('data-open'));
+        else if (closeBtn) {
+          const modal = document.getElementById('modal');
+          if (modal) modal.classList.remove('show');
+        }
+      });
+    }
+    init();
+  })();
+  </script>
+</body>
+</html>
